@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="xyz.chen.service.impl"/>
+    <context:component-scan base-package="xyz.chen.filter"/>
+    
+    <!-- 引入本地数据库配置文件 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!-- 配置druid数据源成bean, 用于创建数据库链接 -->
+    <bean id="dataSource_druid" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!-- 配置事务管理器  -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 将druid注入到数据源  -->
+        <property name="dataSource" ref="dataSource_druid"/>
+    </bean>
+
+    <!-- 配置使用的注解驱动   -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 配置需要用到的数据源 -->
+        <property name="dataSource" ref="dataSource_druid"/>
+        <!-- 加载配置文件 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--  加载接口映射文件 -->
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
+    </bean>
+
+    <!-- 将dao里面的接口全部配置成bean  -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 配置需要用到的SqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory" />
+        <property name="basePackage" value="xyz.chen.dao"/>
+    </bean>
+
+
+</beans>

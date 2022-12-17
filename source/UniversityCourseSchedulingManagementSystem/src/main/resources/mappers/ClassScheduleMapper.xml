@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.chen.dao.ClassScheduleMapper">
+
+    <resultMap id="csMap" type="classSchedule">
+        <result property="classArrangementId" column="caid"/>
+        <result property="times" column="times"/>
+        <result property="classRoomId" column="csid"/>
+        <result property="weekth" column="weekth"/>
+        <result property="dayth" column="dayth"/>
+        <result property="courseth" column="courseth"/>
+        <association property="courseArrangement" javaType="courseArrangement">
+            <result property="id" column="id"/>
+            <result property="courseId" column="courseId"/>
+            <result property="classId" column="classId"/>
+            <result property="teacherId" column="teacherId"/>
+        </association>
+    </resultMap>
+
+    <select id="getClassSchedule" parameterType="StudentInfo" resultMap="csMap">
+        select * from classschedule, coursearrangement
+        where classschedule.caid = coursearrangement.id and coursearrangement.classId = #{classId};
+    </select>
+
+    <select id="getTeacherClassSchedule" parameterType="TeacherInfo" resultMap="csMap">
+        select * from classschedule, coursearrangement
+        where classschedule.caid = coursearrangement.id and coursearrangement.teacherId = #{workId};
+    </select>
+
+    <select id="getAllClassSchedule" resultMap="csMap">
+        select * from classschedule, coursearrangement
+        where classschedule.caid = coursearrangement.id
+    </select>
+
+    <select id="getClassScheduleByCourseArrangementId" resultMap="csMap" parameterType="int">
+        select * from classschedule, coursearrangement
+        where classschedule.caid = coursearrangement.id and classschedule.caid = #{id}
+    </select>
+
+    <select id="getClassScheduleByCaIdAndTimes" resultMap="csMap">
+        select * from classschedule, coursearrangement
+        where classschedule.caid = coursearrangement.id and classschedule.caid = #{caId} and caid = #{caId} and times = #{times}
+    </select>
+
+    <select id="getClassScheduleByPara4" resultMap="csMap">
+        select * from classSchedule where csId = #{csId} and weekTh = #{weekTh} and dayTh = #{dayTh} and courseTh = #{courseTh}
+    </select>
+
+    <select id="getClassScheduleByTime" resultMap="csMap">
+        select * from classschedule, coursearrangement
+        where classschedule.caid = coursearrangement.id and weekTh = #{weekTh} and dayTh = #{dayTh} and courseTh = #{courseTh}
+    </select>
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.chen.dao.ClassInfoMapper">
+    <resultMap id="classInfoMap" type="classInfo">
+        <association property="id" column="id"/>
+        <association property="className" column="className"/>
+        <association property="classSize" column="classSize"/>
+    </resultMap>
+
+    <!-- 起了别名，首字母小写   -->
+    <select id="getAllClassInfo" resultType="classInfo">
+        select * from classInfo
+    </select>
+
+    <select id="getClassInfo" resultType="classInfo">
+        select * from classInfo where id = #{id}
+    </select>
+
+</mapper>

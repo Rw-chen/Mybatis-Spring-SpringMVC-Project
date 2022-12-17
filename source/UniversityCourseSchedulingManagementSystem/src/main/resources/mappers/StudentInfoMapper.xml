@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.chen.dao.StudentInfoMapper">
+
+    <resultMap id="studentInfoMap" type="StudentInfo" >
+        <result property="studentId" column="studentId"></result>
+        <result property="password" column="password"></result>
+        <result property="studentName" column="studentName"></result>
+        <result property="gender" column="gender"></result>
+        <result property="age" column="age"></result>
+        <result property="classId" column="classId"></result>
+        <association property="classInfo" column="classId" select="xyz.chen.dao.ClassInfoMapper.getClassInfo" javaType="xyz.chen.pojo.ClassInfo"/>
+    </resultMap>
+
+    <select id="getStudentInfo" resultMap="studentInfoMap">
+        select * from studentInfo where studentId = #{id} and password = #{pw}
+    </select>
+
+    <select id="getStudentById" resultMap="studentInfoMap" parameterType="String">
+        select * from studentInfo where studentId = #{id}
+    </select>
+
+    <select id="getAllStudent" resultMap="studentInfoMap">
+        select * from studentInfo
+    </select>
+
+</mapper>

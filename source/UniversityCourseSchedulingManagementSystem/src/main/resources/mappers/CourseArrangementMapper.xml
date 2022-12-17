@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.chen.dao.CourseArrangementMapper">
+    
+    <resultMap id="courseArrangementMap" type="courseArrangement">
+        <result property="id" column="id"/>
+        <result property="courseId" column="courseId"/>
+        <result property="classId" column="classId"/>
+        <result property="teacherId" column="teacherId"/>
+
+
+        <association property="courseInfo" column="courseId" select="xyz.chen.dao.CourseInfoMapper.getCourseInfo" javaType="xyz.chen.pojo.CourseInfo"/>
+
+        <!-- 配置了别名，可以不用全类名   -->
+        <association property="classInfo" column="classId" select="xyz.chen.dao.ClassInfoMapper.getClassInfo" javaType="classInfo"/>
+
+        <association property="teacherInfo" column="teacherId" select="xyz.chen.dao.TeacherInfoMapper.getTeacherById" javaType="teacherInfo"/>
+
+    </resultMap>
+    
+    <select id="getAllCourseArrangement" resultMap="courseArrangementMap">
+        select * from courseArrangement
+    </select>
+</mapper>

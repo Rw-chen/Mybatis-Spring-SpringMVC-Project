@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.chen.dao.TeacherInfoMapper">
+
+    <resultMap id="teacherInfoMap" type="TeacherInfo">
+        <result property="workId" column="workId"/>
+        <result property="password" column="password"/>
+        <result property="teacherName" column="teacherName"/>
+        <result property="age" column="age"/>
+        <result property="gender" column="gender"/>
+        <result property="title" column="title"/>
+        <result property="academic" column="academic"/>
+        <result property="detail" column="detail"/>
+    </resultMap>
+
+    <select id="getTeacherInfo" resultMap="teacherInfoMap">
+        select * from TeacherInfo where workId = #{id} and password = #{pw}
+    </select>
+
+
+</mapper>
